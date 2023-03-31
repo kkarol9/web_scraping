@@ -1,0 +1,24 @@
+use python,
+read index.html file and parse it with beautifulsoup.
+
+find all div class="pprofile-activity-widget"
+
+for each div from above list,
+
+
+try find div with class=""pprofile-activity-widget__title" then dane=span.text
+except dane =''
+try find div with class="pprofile-activity-widget__details pprofile-activity-widget__details--MT" then dane2=span.text
+except dane2 =''
+find all div class="pprofile-activity-widget"
+try find all divs with class="pprofile-activity-widget__results" then dane3=span.text
+except dane3 =''
+
+
+
+
+
+open data.json and write dane, dane2, surname, name in json format.
+
+
+ 
