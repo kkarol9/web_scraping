@@ -1,0 +1,14 @@
+use python,
+read index.html file and parse it with beautifulsoup.
+
+find all div class="pprofile-activity-widget__results "
+
+for each div from above list,
+try find span with class="pprofile-activity-widget__last-name" then surname=span.text
+except surname =''
+try find span with class="pprofile-activity-widget__first-name" then name=span.text
+exccept name = ''
+try find div with class="pprofile-activity-widget__result-status-text" then score=span.text
+except score =''
+open data.json and write surname, name in json format.
+
