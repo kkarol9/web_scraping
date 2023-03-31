@@ -18,7 +18,10 @@ for div in activity_divs:
     surname = surname.text if surname else ''
     name = div.find('span', class_='pprofile-activity-widget__first-name')
     name = name.text if name else ''
-    data.append({'surname': surname, 'name': name})
+    score1 = div.find('li', class_='pprofile-activity-widget__score')
+    score1 = score1.text if score1 else ''
+
+    data.append({'surname': surname, 'name': name, 'set 1': score1})
 
 # Write the data to data.json
 with open('data.json', 'w') as f:
