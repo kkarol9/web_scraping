@@ -21,6 +21,14 @@ for widget in widgets:
     details_elem = widget.find('div', class_='pprofile-activity-widget__details pprofile-activity-widget__details--MT')
     details = details_elem.text.strip() if details_elem else ''
 
+    #header = widget.find('span', class_='pprofile-activity-tournament__date')
+    #header = header.text if header else 'ss'
+    data2.append({
+        'title': title,
+        'details': details
+        #'data' : header,
+    })
+
     # find all div elements with class="pprofile-activity-widget__results" within the current widget
     result_widgets = widget.find_all('div', class_='pprofile-activity-widget__results')
 
@@ -51,9 +59,13 @@ for widget in widgets:
     data2.append({
         'title': title,
         'details': details,
+        #'data' : header,
         'score' : data
 
  })
+
+
+
 
 # write the data to data.json
 with open('data.json', 'w') as f:
