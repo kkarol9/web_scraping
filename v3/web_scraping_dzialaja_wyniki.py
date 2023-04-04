@@ -45,6 +45,11 @@ with open('index.html', 'r', encoding='utf-8') as f:
 # Parse the HTML with BeautifulSoup
 soup = BeautifulSoup(html, 'html.parser')
 
+dates = [span.text for span in soup.find_all("span", class_="pprofile-activity-tournament__date")]
+
+
+
+
 # Find all div elements with class="pprofile-activity-widget"
 activity_divs = soup.find_all('div', class_='pprofile-activity-widget')
 
@@ -70,8 +75,8 @@ for div in activity_divs:
 
     data.append({'title': title, 'details': details, 'results': results, 'results 2': results2})
 
-
+data.append(dates)
 
 # Write the data to data.json
-with open('data.csv', 'w') as f:
+with open('data.json', 'w') as f:
     json.dump(data, f)
