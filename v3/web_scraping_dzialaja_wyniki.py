@@ -51,16 +51,27 @@ activity_divs = soup.find_all('div', class_='pprofile-activity-widget')
 # Loop through the divs and extract the data
 data = []
 for div in activity_divs:
+
     title = div.find('div', class_='pprofile-activity-widget__title')
     title = title.text if title else ''
     details = div.find('div', class_='pprofile-activity-widget__details pprofile-activity-widget__details--MT')
     details = details.text if details else ''
-    results = div.find('div', class_='pprofile-activity-widget__results')
-    results = results.text if results else ''
-    data.append({'title': title, 'details': details, 'results': results})
+    #results = div.find('div', class_='pprofile-activity-widget__results')
+    #results = results.text if results else ''
+    results_divs = div.find_all('div', class_='pprofile-activity-widget__results')
+    results = [divss.span.text for divss in results_divs]
+
+    results_divs2 = div.find_all('ol', class_='pprofile-activity-widget__set-scores')
+    results2 = [divss2.text for divss2 in results_divs2]
+
+
+
+
+
+    data.append({'title': title, 'details': details, 'results': results, 'results 2': results2})
 
 
 
 # Write the data to data.json
-with open('data.json', 'w') as f:
+with open('data.csv', 'w') as f:
     json.dump(data, f)
