@@ -1,75 +1,74 @@
+
 import json
 from bs4 import BeautifulSoup
 
-# read index.html file and parse with Beautiful Soup
+# Load the HTML file
 with open('index.html', 'r', encoding='utf-8') as f:
-    soup = BeautifulSoup(f, 'html.parser')
+    html = f.read()
 
-# find all div elements with class="pprofile-activity-widget"
-widgets = soup.find_all('div', class_='pprofile-activity-widget')
+# Parse the HTML with BeautifulSoup
+soup = BeautifulSoup(html, 'html.parser')
 
-# process each widget
+dates = [span.text for span in soup.find_all("span", class_="pprofile-activity-tournament__date")]
+
+
+
+
+# Find all div elements with class="pprofile-activity-widget"
+activity_divs = soup.find_all('div', class_='pprofile-activity-widget')
+
+# Loop through the divs and extract the data
 data = []
-data2 = []
+for div in activity_divs:
 
-for widget in widgets:
-    # try to find the title
-    title_elem = widget.find('div', class_='pprofile-activity-widget__title')
-    title = title_elem.text.strip() if title_elem else ''
+    city = div.find('span', class_='pprofile-activity-widget__location pprofile-activity-widget__details-pair')
+    city = city.text if city else ''
 
-    # try to find the details
-    details_elem = widget.find('div', class_='pprofile-activity-widget__details pprofile-activity-widget__details--MT')
-    details = details_elem.text.strip() if details_elem else ''
+    nation = div.find('span', class_='pprofile-activity-widget__nation pprofile-activity-widget__details-pair')
+    nation = nation.text if nation else ''
 
-    #header = widget.find('span', class_='pprofile-activity-tournament__date')
-    #header = header.text if header else 'ss'
-    data2.append({
-        'title': title,
-        'details': details
-        #'data' : header,
-    })
+    tournament_type = div.find('span', class_='pprofile-activity-widget__tournament-type pprofile-activity-widget__details-pair')
+    tournament_type = tournament_type.text if tournament_type else ''
 
-    # find all div elements with class="pprofile-activity-widget__results" within the current widget
-    result_widgets = widget.find_all('div', class_='pprofile-activity-widget__results')
+    surface = div.find('span', class_='pprofile-activity-widget__surface')
+    surface = surface.text if surface else ''
 
-    # process each result widget
-    for result_widget in result_widgets:
-        # try to find the surname
-        surname_elem = result_widget.find('span', class_='pprofile-activity-widget__last-name')
-        surname = surname_elem.text.strip() if surname_elem else ''
+    draw = div.find('span', class_='pprofile-activity-widget__draw pprofile-activity-widget__details-pair')
+    draw = draw.text if draw else ''
 
-        # try to find the first name
-        first_name_elem = result_widget.find('span', class_='pprofile-activity-widget__first-name')
-        first_name = first_name_elem.text.strip() if first_name_elem else ''
+    type = div.find('span', class_='pprofile-activity-widget__type pprofile-activity-widget__details-pair')
+    type = type.text if type else ''
 
-        # try to find the results
-        results_elem = result_widget.find('div', class_='pprofile-activity-widget__result-status-text')
-        results = results_elem.text.strip() if results_elem else ''
+    entry = div.find('span', class_='pprofile-activity-widget__entry pprofile-activity-widget__details-pair')
+    entry = entry.text if entry else ''
 
-        rezka = result_widget.find('span', class_='pprofile-activity-widget__results-inner')
-        rezka = rezka.text if rezka else ''
+    results_divs = div.find_all('div', class_='pprofile-activity-widget__results')
+    #results = [divss.span.text for divss in results_divs]
+    
 
-        # append the data to the list
-        data.append({
-            'surname': surname,
-            'first_name': first_name,
-            'results': rezka,
-            'score' : results 
-        })
-    data2.append({
-        'title': title,
-        'details': details,
-        #'data' : header,
-        'score' : data
+    """
+    -> zwraca samo Hard
+    surface_tag = soup.find('span', {'class': 'pprofile-activity-widget__surface'})
 
- })
+    surface_tag = surface_tag.find('strong')
+    surface = surface_tag.text
+    """
+    
+    """
+
+
+    results_divs2 = div.find_all('ol', class_='pprofile-activity-widget__set-scores')
+    results2 = [divss2.text for divss2 in results_divs2]
+"""
 
 
 
 
-# write the data to data.json
+    data.append({'City': city, 'Nation' : nation, 'Tournament type': tournament_type, 'Surface' : surface,
+                 'Draw' : draw, 'Type' : type, 'Entry' : entry, 'Results' : results})
+
+data.append(dates)
+
+# Write the data to data.json
 with open('data.json', 'w') as f:
-    json.dump(data2, f)
-
-
-
+    json.dump(data, f)
