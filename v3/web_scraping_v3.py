@@ -19,6 +19,7 @@ activity_divs = soup.find_all('div', class_='pprofile-activity-widget')
 
 # Loop through the divs and extract the data
 data = []
+data2 = []
 for div in activity_divs:
 
     city = div.find('span', class_='pprofile-activity-widget__location pprofile-activity-widget__details-pair')
@@ -43,8 +44,17 @@ for div in activity_divs:
     entry = entry.text if entry else ''
 
     results_divs = div.find_all('div', class_='pprofile-activity-widget__results')
-    #results = [divss.span.text for divss in results_divs]
+    #results = [divss.span for divss in results_divs]
+    #results = results.text if results else ''
+    for r in results_divs:
+        round = div.find('span', class_='pprofile-activity-widget__round-inner')
+        round = round.text if round else ''
+
+        data2.append({'Round' : round})
+
     
+    results_set_divs = div.find_all('div', class_='pprofile-activity-widget__result-status-text')
+    results_set = [div_set.ol.text for div_set in results_set_divs]
 
     """
     -> zwraca samo Hard
@@ -65,7 +75,7 @@ for div in activity_divs:
 
 
     data.append({'City': city, 'Nation' : nation, 'Tournament type': tournament_type, 'Surface' : surface,
-                 'Draw' : draw, 'Type' : type, 'Entry' : entry, 'Results' : results})
+                 'Draw' : draw, 'Type' : type, 'Entry' : entry, 'Set sccore:' : results_set, 'Round' : round})
 
 data.append(dates)
 
