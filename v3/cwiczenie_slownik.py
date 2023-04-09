@@ -25,7 +25,17 @@ data2.append({
 
  })
 print(data2)
+print("/n")
+print("/n")
 
+print("/n")
+
+
+data = []
+for i in range(5):
+    data.append({'kolejnosc' : i})
+
+print(data)
 
 with open('cwiczenie_slownik.json', 'w') as f:
     json.dump(data2, f)

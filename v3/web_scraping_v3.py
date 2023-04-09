@@ -43,18 +43,38 @@ for div in activity_divs:
     entry = div.find('span', class_='pprofile-activity-widget__entry pprofile-activity-widget__details-pair')
     entry = entry.text if entry else ''
 
-    results_divs = div.find_all('div', class_='pprofile-activity-widget__results')
-    #results = [divss.span for divss in results_divs]
-    #results = results.text if results else ''
-    for r in results_divs:
-        round = div.find('span', class_='pprofile-activity-widget__round-inner')
+    everything = []
+    for s in div.find_all('div', class_='pprofile-activity-widget__results'):
+        round = s.find('strong', class_='pprofile-activity-widget__round-label--mobile')
         round = round.text if round else ''
 
-        data2.append({'Round' : round})
+        win_lose = s.find('span', class_='pprofile-activity-widget__win-loss')
+        win_lose = win_lose.text if win_lose else ''
 
-    
-    results_set_divs = div.find_all('div', class_='pprofile-activity-widget__result-status-text')
-    results_set = [div_set.ol.text for div_set in results_set_divs]
+        nationality = s.find('span', class_='pprofile-activity-widget__nationality')
+        nationality = nationality.text if nationality else ''
+
+        name_surname = s.find('span', class_='player-wrapper')
+        name_surname = name_surname.text if name_surname else ''
+            
+        score = s.find('ol').text
+        everything.append({'Round': round,'Win/lose' : win_lose, 'Nationality' : nationality, 'Name anad surname' : name_surname,
+                                'Score' : score})
+    data2.append(everything)
+    #results_divs = div.find_all('div', class_='pprofile-activity-widget__results')
+    #for r in results_divs:
+        #round = [span.text for r in soup.find_all("span", class_="pprofile-activity-widget__round-only pprofile-activity-widget__details-pair")]
+        #print(round)
+    #results = [divss.span for divss in results_divs]
+    #results = results.text if results else ''
+    #for r in results_divs:
+    #    round = div.find('span', class_='pprofile-activity-widget__round-inner')
+    #    round = round.text if round else ''
+
+    #    data2.append({'Round' : round})
+
+    #results_set_divs = div.find_all('div', class_='pprofile-activity-widget__result-status-text')
+    #results_set = [div_set.ol.text for div_set in results_set_divs]
 
     """
     -> zwraca samo Hard
@@ -75,7 +95,7 @@ for div in activity_divs:
 
 
     data.append({'City': city, 'Nation' : nation, 'Tournament type': tournament_type, 'Surface' : surface,
-                 'Draw' : draw, 'Type' : type, 'Entry' : entry, 'Set sccore:' : results_set, 'Round' : round})
+                 'Draw' : draw, 'Type' : type, 'Entry' : entry, 'Results' : everything})
 
 data.append(dates)
 
